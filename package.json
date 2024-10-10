@@ -8,7 +8,8 @@
     "start": "sass --watch src/scss:dist/css & live-server",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --write \"**/*.{js,json,css,md}\""
+    "format": "prettier --write \"**/*.{js,json,css,md}\"",
+    "prepare": "husky install"
   },
   "keywords": [],
   "author": "Noroff",
@@ -28,5 +29,8 @@
   },
   "dependencies": {
     "bootstrap-dark-5": "^1.1.3"
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix"
   }
 }
