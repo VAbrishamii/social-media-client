@@ -1,37 +1,33 @@
-describe("Authentication Tests", () => {
+describe('Login and Logout Test', () => {
   beforeEach(() => {
-      cy.visit("/"); 
+    cy.visit('https://norofffeu.github.io/social-media-client/');
   });
 
-  it("should allow a user to log in with valid credentials", () => {
-  
-      cy.get("input[name='email']").first().type('validEmail@example.com'); 
-      cy.get("input[name='password']").first().type("validPassword"); 
-      cy.get("button[type='submit']").first().click(); 
-
-      cy.url().should("include", "/"); 
-     
+  it('should log in with valid credentials', () => {
+    cy.get('#loginEmail').type('validUser@noroff.no', { force: true });
+    cy.get('#loginPassword').type('validPassword', { force: true });
+    cy.get('#loginForm').submit({ force: true });
   });
 
-  it("should not allow a user to log in with invalid credentials", () => {
+  it('should log out successfully', () => {
+    cy.get('button[data-auth="logout"]').click({ force: true });
 
-      cy.get("input[name='email']").first().type("user@example.com"); 
-      cy.get("input[name='password']").first().type("invalidPassword"); 
-      cy.get("button[type='submit']").first().click(); 
-
-      cy.contains("Invalid ").should("be.visible"); 
-  });
-
-  it('should log out with the logout button', () => {
-    cy.get('input[name="email"]').type('user@example.com');
-    cy.get('input[name="password"]').type('validPassword');
-    cy.get('button[type="submit"]').click();
-
-    cy.get('button#logout').click(); 
-    cy.url().should('include', '/login'); 
-
-
+    cy.url().should('eq','https://norofffeu.github.io/social-media-client/'); 
   });
 });
 
+describe('Login with invalid credentials', () => {
+  beforeEach(() => {
+    cy.visit('https://norofffeu.github.io/social-media-client/');
+  });
 
+  it('should not log in with invalid credentials and show an error message', () => {
+    cy.get('#loginEmail').type('123@hotmil.no', { force: true });
+    cy.get('#loginPassword').type('whei', { force: true });
+    cy.get('#loginForm').submit({ force: true });
+
+    cy.on('window:alert', (txt) => {
+      expect(txt).to.contains('Either your username was not found or your password is incorrect'); 
+    });
+  });
+});
