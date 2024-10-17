@@ -52,8 +52,15 @@
     "bootstrap-dark-5": "^1.1.3"
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
-    "braces": "^3.0.3",
-    "readdirp": "^4.0.2"
+    "*.js": [
+      "eslint --cache --fix",
+      "prettier --write"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
+
